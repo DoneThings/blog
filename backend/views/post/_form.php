@@ -1,5 +1,8 @@
 <?php
 
+use common\models\Poststatus;
+use common\models\Adminuser;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -18,14 +21,30 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'tags')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'status')->textInput() ?>
+    <?php
+        $psObjs = Poststatus::find()->all();
+        $allStatus = ArrayHelper::map($psObjs, 'id', 'name');
+    ?>
+    <?= $form->field($model, 'status')->dropDownList(
+            Poststatus::find()
+            ->select(['name'])
+            ->orderBy('position')
+            ->indexBy('id')
+            ->column(),
+            ['prompt' => '请选择状态']
+    ); ?>
 
     <?= $form->field($model, 'create_time')->textInput() ?>
 
     <?= $form->field($model, 'update_time')->textInput() ?>
 
-    <?= $form->field($model, 'author_id')->textInput() ?>
-
+    <?= $form->field($model, 'author_id')->dropDownList(
+        Adminuser::find()
+            ->select(['nickname'])
+            ->indexBy('id')
+            ->column(),
+        ['prompt' => '请选择作者']
+    ); ?>
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
