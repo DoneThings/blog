@@ -63,4 +63,9 @@ class Commentstatus extends \yii\db\ActiveRecord
     {
         return new \common\models\querys\CommentstatusQuery(get_called_class());
     }
+
+    public static function getCommentStates()
+    {
+        return self::find()->select(['name'])->orderBy(['position' => SORT_ASC])->indexBy('id')->column();
+    }
 }

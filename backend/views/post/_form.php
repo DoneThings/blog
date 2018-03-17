@@ -42,7 +42,7 @@ use yii\widgets\ActiveForm;
         ['prompt' => '请选择作者']
     ); ?>
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton($model->isNewRecord ? '新增' : '修改', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

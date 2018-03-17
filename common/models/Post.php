@@ -90,7 +90,7 @@ class Post extends SActiveRecord
         foreach ($tags as $name) {
             $aTag = Tag::find()->where(['name' => $name])->one();
             if (empty($aTag)) {
-                
+
             } elseif ($aTag->frequency <= 1) {
                 $aTag->delete();
             } else {

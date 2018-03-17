@@ -20,7 +20,7 @@ use Yii;
  * @property Commentstatus $status0
  * @property User $user
  */
-class Comment extends \yii\db\ActiveRecord
+class Comment extends SActiveRecord
 {
     /**
      * @inheritdoc
@@ -53,13 +53,13 @@ class Comment extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'content' => 'Content',
-            'status' => 'Status',
-            'create_time' => 'Create Time',
-            'userid' => 'Userid',
+            'content' => '评论',
+            'status' => '状态',
+            'create_time' => '创建时间',
+            'userid' => '作者',
             'email' => 'Email',
             'url' => 'Url',
-            'post_id' => 'Post ID',
+            'post_id' => '文章',
         ];
     }
 
@@ -94,5 +94,24 @@ class Comment extends \yii\db\ActiveRecord
     public static function find()
     {
         return new \common\models\querys\CommentQuery(get_called_class());
+    }
+
+    public function getBeginning()
+    {
+        $str = strip_tags($this->content);
+        $len = mb_strlen($str);
+
+        return mb_substr($str, 0, 10, 'utf-8') . ($len > 10 ? '...' : '');
+    }
+
+    public function approve()
+    {
+        $this->status = 2;
+        return $this->save() ? true : false;
+    }
+
+    public static function getPendingCount()
+    {
+        return Comment::find()->where(['status' => 1])->count();
     }
 }
